@@ -133,6 +133,9 @@ bloqueado y aparece una recomendación de matrícula.
 
 ## 6. Demo en vivo (para hacer durante la exposición)
 
+**URL pública para probar desde cualquier dispositivo (sin instalar nada):**
+<https://davidchiac.github.io/unab-chatbot/>
+
 Abre el chat de la app o la ventana web de prueba y haz estas tres preguntas:
 
 | Orden | Asistente | Pregunta | Qué debe responder |

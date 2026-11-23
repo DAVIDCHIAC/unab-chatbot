@@ -14,6 +14,11 @@ académico y a las noticias.
 > **¿Vas a exponer el proyecto?** Usa el
 > [**Informe de exposición (3–5 min)**](INFORME_EXPOSICION.md): guion cronometrado,
 > tecnologías, demo en vivo, evidencias y preguntas frecuentes.
+>
+> **Demo web en vivo ( abre en el celular ):**
+> <https://davidchiac.github.io/unab-chatbot/> · interfaz estática en
+> [`chat/index.html`](chat/index.html) que llama directamente a los webhooks de
+> n8n Cloud. No requiere instalar nada.
 
 ```
 Scraper RSS (WF04 · cron 6 h) ── 2 fuentes + filtros fecha/tema ──┐
