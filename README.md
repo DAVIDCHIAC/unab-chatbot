@@ -487,6 +487,8 @@ unab-chatbot/
 | [`docs/04-rag-detalle.md`](docs/04-rag-detalle.md) | Chunking, overlap, modelo único y evidencia de recuperación |
 | [`docs/MANUAL_USUARIO.md`](docs/MANUAL_USUARIO.md) | Guía paso a paso para el estudiante demo |
 | [`database/README.md`](database/README.md) | Scripts, orden, estudiantes de prueba |
+| [`database/CONSULTAS_UTILES.sql`](database/CONSULTAS_UTILES.sql) | Consultas para ver tablas, cursos, notas y vectores en Supabase |
+| [`database/evidencias/tablas_datos_sinteticos.md`](database/evidencias/tablas_datos_sinteticos.md) | Volcado legible de todas las tablas con datos sintéticos |
 | [`mcp-server/README.md`](mcp-server/README.md) | Herramientas, Docker, EC2, Caddy |
 | [`n8n/README.md`](n8n/README.md) | Importación, credenciales, endpoints, troubleshooting |
 | [`n8n/CONFIGURACION_MANUAL.md`](n8n/CONFIGURACION_MANUAL.md) | Credenciales paso a paso para el plan Free Trial |

@@ -19,6 +19,14 @@ Ejecuta **en este orden** en el *SQL Editor* de Supabase (o con `psql`):
 | 7 | `07_conocimiento_rag.sql` | Base de conocimiento institucional (23 chunks iniciales; `ingest.py` produce 27 con overlap) |
 | 8 | `08_actualizar_demo.sql` | Periodo activo, calendario y noticias relativos a la fecha actual |
 
+## Ver las tablas y los datos
+
+- **`CONSULTAS_UTILES.sql`**: consultas listas para pegar en el *SQL Editor* de
+  Supabase (tablas, cursos, estudiantes, prerrequisitos, notas, vistas, RAG y
+  conversaciones).
+- **`evidencias/tablas_datos_sinteticos.md`**: volcado legible y real de todas
+  las tablas y vistas, con sus filas, para revisar los datos sin credenciales.
+
 > `05_rls_policies.sql` usa `auth.uid()`, por lo que **solo funciona en Supabase**.
 > Si lo corres en un PostgreSQL local, omítelo.
 
