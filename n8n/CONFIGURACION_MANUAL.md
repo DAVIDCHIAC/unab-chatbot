@@ -79,7 +79,7 @@ Modelo configurado en los 3 nodos: **`models/gemini-3.5-flash-lite`**.
 
 ## 4. Endpoint del MCP
 
-`https://directories-minimum-contracting-guarantees.trycloudflare.com/mcp`
+`https://organize-removing-levels-auburn.trycloudflare.com/mcp`
 
 Si el túnel cambia tras un reinicio de la EC2:
 
@@ -87,6 +87,13 @@ Si el túnel cambia tras un reinicio de la EC2:
 python n8n/actualizar_mcp.py <NUEVA_URL>
 python n8n_setup.py publish
 ```
+
+> **Rotación del 23/11:** tras un reinicio de la EC2, Cloudflare asignó un nuevo
+> hostname. El timer `unab-tunel-sync` actualizó `MCP_ALLOWED_HOSTS`, pero el
+> contenedor en ejecución conservaba la configuración anterior; fue necesario
+> recrearlo (`docker compose up -d --build`) para que aceptara el nuevo `Host`.
+> Además se alineó WF03 con `models/gemini-3.5-flash-lite` y se corrigió el
+> nombre de las columnas `*_prerequisito` en su consulta de resumen.
 
 `Enviar Push FCM` (WF04) permanece desactivado a propósito: es un placeholder de
 Firebase sin credenciales; el resto del workflow funciona igual.

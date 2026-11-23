@@ -1,5 +1,5 @@
 {
-  "fecha": "2026-11-22 21:20:49 UTC",
+  "fecha": "2026-11-23 01:06:48 UTC",
   "base_url": "https://unab-chatbot.app.n8n.cloud",
   "total": 6,
   "correctos": 6,
@@ -18,8 +18,8 @@
         "ok": true,
         "session_id": "evidencia-001",
         "tipo": "rag",
-        "respuesta": "Para obtener tu título de grado en la UNAB, debes cumplir con los siguientes requisitos fundamentales:\n\n1. **Aprobar el 100% de los créditos** correspondientes a tu plan de estudios.\n2. Mantener un **promedio acumulado mínimo de 3.0**.\n3. Realizar y aprobar la **práctica profesional o el trabajo de grado** (según aplique a tu programa).\n4. Cumplir con el requisito de **suficiencia en segunda lengua** y las **competencias digitales** del CCD.\n5. Estar a **paz y salvo** por todo concepto con la universidad (financiero, biblioteca, laboratorios, etc.).\n6. Presentar la **solicitud formal de grado** en la oficina de Registro Académico dentro de las fechas establecidas en el calendario institucional.\n\nSi quieres que revise cómo vas con tu avance de créditos o tu promedio actual, ¡avísame y lo consultamos!\n\nFuente: proceso_grado.md",
-        "latencia_ms": 3937
+        "respuesta": "Para obtener el título de pregrado en la UNAB, debes cumplir con los siguientes requisitos:\n\n1. **Aprobar el 100% de los créditos** de tu plan de estudios.\n2. Mantener un **promedio acumulado** igual o superior a **3.0**.\n3. Cumplir con las horas de **práctica o trabajo de grado**.\n4. Estar a **paz y salvo** con la universidad.\n5. Acreditar el requisito de **segunda lengua** y las **competencias digitales** definidas por el CCD.\n6. Radicar la **solicitud de grado** en Registro Académico durante el periodo indicado en el calendario académico.\n\nFuente: proceso_grado.md",
+        "latencia_ms": 10517
       }
     },
     {
@@ -35,8 +35,8 @@
         "ok": true,
         "session_id": "evidencia-002",
         "tipo": "calendario",
-        "respuesta": "Para el periodo académico activo (Segundo semestre 2026, del 15/07/2026 al 30/11/2026), los exámenes finales programados son:\n\n* **Exámenes finales:** Del 26/11/2026 al 03/12/2026 (faltan 4 días). *Semana de evaluaciones finales. Consulta el horario publicado por tu facultad.*\n* **Primer corte evaluativo:** Del 10/02/2027 al 14/02/2027 (faltan 80 días).\n* **Segundo corte evaluativo:** Del 10/03/2027 al 14/03/2027 (faltan 108 días).\n* **Exámenes finales del siguiente ciclo:** Del 11/04/2027 al 20/04/2027 (faltan 140 días).\n\nRecuerda que las fechas oficiales pueden cambiar y deben confirmarse en la Secretaría General.",
-        "latencia_ms": 3969
+        "respuesta": "Para el periodo académico activo (Segundo semestre 2026, del 15/07/2026 al 30/11/2026), los exámenes finales son:\n\n- **Exámenes finales:** del 26/11/2026 al 03/12/2026 (faltan 3 días). *Semana de evaluaciones finales. Consulta el horario publicado por tu facultad.*\n- **Exámenes finales del siguiente ciclo:** del 11/04/2027 al 20/04/2027 (faltan 139 días). *Evaluaciones finales del semestre en curso.*\n\nRecuerda que las fechas oficiales pueden cambiar y deben confirmarse en la Secretaría General.",
+        "latencia_ms": 10683
       }
     },
     {
@@ -53,8 +53,8 @@
         "ok": true,
         "session_id": "evidencia-003",
         "tipo": "academico",
-        "respuesta": "**a) Resumen del estado académico:**\nEstás matriculado en el **3er semestre** de **Ingeniería de Sistemas** con un promedio acumulado de **3.69**. Has aprobado **30 créditos** (18.8% de avance total del plan de estudios) y tienes 14 créditos en curso. Se proyecta que te falten unos 8 semestres para culminar tu carrera.\n\n**b) Cursos aprobados y pendientes:**\n- **Aprobados:** 10 asignaturas.\n- **En curso:** 4 asignaturas.\n- **Pendientes:** Tienes **37 asignaturas** pendientes por cursar para completar tu malla curricular.\n\n**c) Riesgos y bloqueos por prerrequisitos:**\n- Tienes **1 asignatura reprobada**: *Cálculo Integral* (con calificación de 2.4).\n- Tienes **6 cursos bloqueados** actualmente: *Cálculo Multivariado* por no tener aprobado su prerrequisito, y otras 5 materias (como *Bases de Datos II*, *Sistemas Operativos*, entre otras) debido a que sus prerrequisitos están pendientes o en curso.\n\n**d) Recomendación:**\nEs fundamental que planifiques la recuperación de *Cálculo Integral* para destrabar las materias de matemáticas avanzadas. Te sugiero agendar una cita con el **director de tu programa** para revisar tu ruta académica y estructurar de manera óptima tu próxima matrícula.",
-        "latencia_ms": 2946
+        "respuesta": "**a) Resumen del estado académico:**\nCuras el **3er semestre** de **Ingeniería de Sistemas** con un promedio acumulado de **3.69**. Has aprobado **30 créditos** (equivalente al **18.8%** de avance de tu carrera) y tienes 14 créditos en curso. Se proyectan aproximadamente 8 semestres adicionales para tu graduación.\n\n**b) Cursos aprobados, en curso y pendientes:**\n- **Aprobados:** 10 asignaturas.\n- **En curso:** 4 asignaturas.\n- **Pendientes:** Tienes **37 asignaturas pendientes** por cursar y aprobar para completar tu plan de estudios.\n\n**c) Riesgos y bloqueos por prerrequisitos:**\n- Posees **1 asignatura reprobada**: *Cálculo Integral* (con calificación de 2.4).\n- Tienes **6 cursos bloqueados** en total, incluyendo *Cálculo Multivariado* (bloqueado por prerrequisito reprobado/pendiente) y otras asignaturas profesionales cuyos prerrequisitos se encuentran actualmente en curso.\n\n**d) Recomendación:**\nTe sugiero priorizar la nivelación de *Cálculo Integral* para destrabar la línea de matemáticas y evitar retrasos mayores. Asimismo, te recomiendo contactar al **director de tu programa** para revisar tu ruta crítica y planificar adecuadamente tu próxima matrícula.",
+        "latencia_ms": 4938
       }
     },
     {
@@ -76,7 +76,7 @@
             "fecha_inicio": "2026-11-26T00:00:00.000Z",
             "fecha_fin": "2026-12-03T00:00:00.000Z",
             "descripcion": "Semana de evaluaciones finales. Consulta el horario publicado por tu facultad.",
-            "dias_faltantes": 4
+            "dias_faltantes": 3
           },
           {
             "id": "50",
@@ -86,7 +86,7 @@
             "fecha_inicio": "2027-04-11T00:00:00.000Z",
             "fecha_fin": "2027-04-20T00:00:00.000Z",
             "descripcion": "Evaluaciones finales del semestre en curso.",
-            "dias_faltantes": 140
+            "dias_faltantes": 139
           }
         ]
       }
@@ -402,16 +402,6 @@
         "total": 2,
         "noticias": [
           {
-            "id": "23",
-            "titulo": "UNAB, primer lugar como universidad de Santander en medición internacional de sostenibilidad",
-            "resumen": "UNAB, primer lugar como universidad de Santander en medición internacional de sostenibilidad Caracol Radio",
-            "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxQZlNVazl1VGU1TUNGZEVCU2JXaVVXX2YwWF9wenBOa1dMbUhNSEphZi1ObjNERS04OFNaY29lOUhaeThIRkFWLXhMV3RmVFRKc0RUbDhvcUcxRVpKWjd4b0lfOElWZEFiUEkwUkdoeUhyc3N3Snk5Ti1palczQUVJZmludEhDdHlUMUhseGdYdW53YVltWEJOVG5GeGJqMzBHNU4xU2RBcy1Db2haeGZqZUFDR1ZzaTJ4Vnd4ZDMzZGk1WkdY0gHYAUFVX3lxTE5sUG5CRXJQYjFJeUstMUNTcS1JWHBtWkI3cWhjMDBxYWxMdXlfaHpOc2pYakdDNVg4UjcyVUhCZlZwMl9vejRmNzBxTG5Jel9hbzJnX29maktVeHNKQkZUaVNyaWE0ZE5YdGdLdnRwdEtibVJpUHRoT1NwWnpBWUhPT0RNUHVxR0MyWUpheUJ4UWM5cjU5SW9Fc0ZGLTdPczJ1ajh4THNFRUNsYUNZTmh2RFdDNUpHdEJkWk5SLUxoUFhtWkNLVEhkSjVfWTEzUXBsdTFCRHczRg?oc=5",
-            "fuente": "Caracol Radio",
-            "categoria": "noticia",
-            "fecha_publicacion": "2026-11-22T00:00:00.000Z",
-            "dias_publicada": 0
-          },
-          {
             "id": "28",
             "titulo": "UNAB, primer lugar como universidad de Santander en medición internacional de sostenibilidad",
             "resumen": "UNAB, primer lugar como universidad de Santander en medición internacional de sostenibilidad Caracol Radio",
@@ -419,7 +409,17 @@
             "fuente": "Caracol Radio",
             "categoria": "noticia",
             "fecha_publicacion": "2026-11-22T00:00:00.000Z",
-            "dias_publicada": 0
+            "dias_publicada": 1
+          },
+          {
+            "id": "23",
+            "titulo": "UNAB, primer lugar como universidad de Santander en medición internacional de sostenibilidad",
+            "resumen": "UNAB, primer lugar como universidad de Santander en medición internacional de sostenibilidad Caracol Radio",
+            "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxQZlNVazl1VGU1TUNGZEVCU2JXaVVXX2YwWF9wenBOa1dMbUhNSEphZi1ObjNERS04OFNaY29lOUhaeThIRkFWLXhMV3RmVFRKc0RUbDhvcUcxRVpKWjd4b0lfOElWZEFiUEkwUkdoeUhyc3N3Snk5Ti1palczQUVJZmludEhDdHlUMUhseGdYdW53YVltWEJOVG5GeGJqMzBHNU4xU2RBcy1Db2haeGZqZUFDR1ZzaTJ4Vnd4ZDMzZGk1WkdY0gHYAUFVX3lxTE5sUG5CRXJQYjFJeUstMUNTcS1JWHBtWkI3cWhjMDBxYWxMdXlfaHpOc2pYakdDNVg4UjcyVUhCZlZwMl9vejRmNzBxTG5Jel9hbzJnX29maktVeHNKQkZUaVNyaWE0ZE5YdGdLdnRwdEtibVJpUHRoT1NwWnpBWUhPT0RNUHVxR0MyWUpheUJ4UWM5cjU5SW9Fc0ZGLTdPczJ1ajh4THNFRUNsYUNZTmh2RFdDNUpHdEJkWk5SLUxoUFhtWkNLVEhkSjVfWTEzUXBsdTFCRHczRg?oc=5",
+            "fuente": "Caracol Radio",
+            "categoria": "noticia",
+            "fecha_publicacion": "2026-11-22T00:00:00.000Z",
+            "dias_publicada": 1
           }
         ]
       }

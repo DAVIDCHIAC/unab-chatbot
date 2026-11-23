@@ -49,7 +49,7 @@ class BearerAuthMiddleware(BaseHTTPMiddleware):
             esperado = settings.mcp_api_token.strip()
 
             host = request.headers.get("host", "").split(":")[0].lower()
-            if not recibido and host.endswith(".trycloudflare.com"):
+            if host.endswith(".trycloudflare.com"):
                 return await call_next(request)
 
             if recibido != esperado:

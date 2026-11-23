@@ -77,7 +77,7 @@ scrcpy --screenshot docs/capturas/02-chat.png
 **Opción B — terminal:**
 
 ```bash
-curl https://directories-minimum-contracting-guarantees.trycloudflare.com/health
+curl https://organize-removing-levels-auburn.trycloudflare.com/health
 ```
 
 Captura la terminal con fuente legible y sin el token visible.
