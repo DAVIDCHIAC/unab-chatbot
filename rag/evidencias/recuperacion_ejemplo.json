@@ -1,0 +1,62 @@
+{
+  "fecha": "2026-11-22 21:18:22 UTC",
+  "pregunta": "¿Qué prerrequisitos bloquean Cálculo Multivariado?",
+  "embedding": {
+    "proveedor": "Google Gemini",
+    "modelo": "gemini-embedding-001",
+    "task_type": "RETRIEVAL_QUERY",
+    "dimensiones": 1536
+  },
+  "funcion_sql": "unab.buscar_conocimiento(query_embedding, 5)",
+  "indice": "hnsw (vector_cosine_ops)",
+  "homogeneidad_coleccion": [
+    {
+      "modelo": "gemini:gemini-embedding-001",
+      "dimensiones": "1536",
+      "overlap": "160",
+      "chunks": 27
+    }
+  ],
+  "fragmentos": [
+    {
+      "id": "8d47140c-86e1-4467-965c-d7b197a259ec",
+      "fuente": "plan_estudios_ingenieria_sistemas.md",
+      "titulo": "Plan de Estudios Ingeniería de Sistemas UNAB",
+      "numero": "2",
+      "fragmento": "objetivo es que el estudiante pase de la resolución de problemas al diseño de sistemas integros, con énfasis en trabajo colaborativo y comunicación técnica.\nLos primeros semestres construyen la base lógica y cuantitativa: Cálculo Integral, Álgebra Lineal, Lógi",
+      "similitud": 0.6759
+    },
+    {
+      "id": "5d4dea1a-e956-4788-a936-2f99b513b3c9",
+      "fuente": "reglamento_estudiantil.md",
+      "titulo": "Reglamento Estudiantil UNAB",
+      "numero": "4",
+      "fragmento": "que define un plan de acompañamiento. La reprobación afecta el promedio acumulado y puede bloquear asignaturas que tengan esa materia como prerrequisito.\nLos prerrequisitos son asignaturas que deben estar aprobadas antes de matricular otra. El sistema de matrí",
+      "similitud": 0.6512
+    },
+    {
+      "id": "e39ff8a8-aa5d-491a-8888-41ac08470826",
+      "fuente": "reglamento_estudiantil.md",
+      "titulo": "Reglamento Estudiantil UNAB",
+      "numero": "5",
+      "fragmento": "correquisitos, en cambio, deben matricularse en el mismo periodo. La malla curricular de cada programa detalla las relaciones de prerrequisito y correquisito.\nEl estudiante puede cancelar una o varias asignaturas hasta la fecha límite de cancelación publicada ",
+      "similitud": 0.6274
+    },
+    {
+      "id": "f38a5a7f-a608-4d2d-921b-25e5808fc34f",
+      "fuente": "plan_estudios_ingenieria_sistemas.md",
+      "titulo": "Plan de Estudios Ingeniería de Sistemas UNAB",
+      "numero": "3",
+      "fragmento": "bloquea Cálculo Multivariado, y la de Programación II bloquea Estructuras de Datos; el robot académico usa estas reglas para recomendar una malla viable.\nA partir del quinto semestre el plan se orienta a la integración: Ingeniería de Software, Redes y Comunica",
+      "similitud": 0.6207
+    },
+    {
+      "id": "c9264ed5-6303-4c7f-88ce-e428db43fc1b",
+      "fuente": "proceso_grado.md",
+      "titulo": "Requisitos y opciones de grado",
+      "numero": "1",
+      "fragmento": "Para obtener el título de pregrado el estudiante debe aprobar el 100% de los créditos del plan de estudios, tener un promedio acumulado igual o superior a 3.0, cumplir las horas de práctica o trabajo de grado y estar a paz y salvo con la universidad. También d",
+      "similitud": 0.5843
+    }
+  ]
+}

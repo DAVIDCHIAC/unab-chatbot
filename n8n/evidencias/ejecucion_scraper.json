@@ -1,0 +1,101 @@
+{
+  "workflow": "UNAB WF04 · Noticias y convocatorias",
+  "workflow_id": "6dEM7t1ptkjdjNPB",
+  "execution_id": "100",
+  "execution_status": "success",
+  "ejecutado": "2026-11-22T21:12:42.033Z",
+  "fuentes_rss": [
+    {
+      "nodo": "Leer RSS Google News",
+      "items": 9,
+      "filtro": "UNAB Bucaramanga + educación/tecnología/ingeniería de sistemas, when:45d"
+    },
+    {
+      "nodo": "Leer RSS UNAB institucional",
+      "items": 27,
+      "filtro": "Universidad Autónoma de Bucaramanga, when:45d"
+    }
+  ],
+  "normalizadas": 6,
+  "guardadas_upsert": 6,
+  "filtros_aplicados": {
+    "fecha": "CURRENT_DATE - INTERVAL '45 days' (SQL) y Date.now()-45 días (Code)",
+    "temas": "educación / tecnología / ingeniería de sistemas / convocatorias / becas",
+    "deduplicacion": "por URL con Set()"
+  },
+  "muestra_normalizada": [
+    {
+      "titulo": "Así se reinventa la UNAB para responder a los retos de la educación superior",
+      "categoria": "noticia",
+      "fecha_publicacion": "2026-11-03",
+      "fuente": "Revista Semana"
+    },
+    {
+      "titulo": "Universidad Autónoma de Bucaramanga subió 70 puestos en ranking QS y llegó al top 15",
+      "categoria": "noticia",
+      "fecha_publicacion": "2026-10-19",
+      "fuente": "LaRepublica.co"
+    },
+    {
+      "titulo": "UNAB entra al grupo de las 200 mejores universidades de América Latina y el Caribe, según ranking QS",
+      "categoria": "noticia",
+      "fecha_publicacion": "2026-10-09",
+      "fuente": "Caracol Radio"
+    },
+    {
+      "titulo": "UNAB se consolida entre las diez universidades más sostenibles de Colombia, según ranquin internacional",
+      "categoria": "noticia",
+      "fecha_publicacion": "2026-11-20",
+      "fuente": "Metropolitano"
+    },
+    {
+      "titulo": "UNAB, primer lugar como universidad de Santander en medición internacional de sostenibilidad",
+      "categoria": "noticia",
+      "fecha_publicacion": "2026-11-22",
+      "fuente": "Caracol Radio"
+    },
+    {
+      "titulo": "Tres universidades de Santander entre las 36 primeras del país en Saber Pro 2025. ¿Cuáles?",
+      "categoria": "noticia",
+      "fecha_publicacion": "2026-10-10",
+      "fuente": "Caracol Radio"
+    }
+  ],
+  "base_de_datos": {
+    "total_noticias": 20,
+    "fecha_minima": "2026-01-10",
+    "fecha_maxima": "2026-11-22",
+    "recientes_45_dias": [
+      {
+        "titulo": "UNAB, primer lugar como universidad de Santander en medición internacional de sostenibilidad",
+        "categoria": "noticia",
+        "fecha_publicacion": "2026-11-22"
+      },
+      {
+        "titulo": "UNAB, primer lugar como universidad de Santander en medición internacional de sostenibilidad",
+        "categoria": "noticia",
+        "fecha_publicacion": "2026-11-22"
+      },
+      {
+        "titulo": "UNAB se consolida entre las diez universidades más sostenibles de Colombia, según ranquin internacional",
+        "categoria": "noticia",
+        "fecha_publicacion": "2026-11-20"
+      },
+      {
+        "titulo": "Inscripciones abiertas para el semillero de inteligencia artificial",
+        "categoria": "convocatoria",
+        "fecha_publicacion": "2026-11-20"
+      },
+      {
+        "titulo": "Nuevo horario de atención de Registro Académico",
+        "categoria": "noticia",
+        "fecha_publicacion": "2026-11-16"
+      },
+      {
+        "titulo": "Taller de preparación para exámenes finales",
+        "categoria": "evento",
+        "fecha_publicacion": "2026-11-13"
+      }
+    ]
+  }
+}

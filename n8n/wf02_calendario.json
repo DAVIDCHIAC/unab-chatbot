@@ -1,0 +1,553 @@
+{
+  "name": "UNAB WF02 · Calendario académico",
+  "nodes": [
+    {
+      "id": "903c21bf-54f6-47ac-b13e-9155d433b1af",
+      "name": "Notas WF02",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -420,
+        -40
+      ],
+      "parameters": {
+        "content": "## WF02 · Calendario académico\n\n**Entrada:** `POST /webhook/unab/calendario`\n\n```json\n{\n  \"session_id\": \"ses-002\",\n  \"pregunta\": \"¿Cuándo son los exámenes finales?\",\n  \"canal\": \"android\"\n}\n```\n\n**Qué hace**\n1. Normaliza la petición.\n2. El agente consulta `obtener_periodo_activo` y `consultar_calendario` por MCP.\n3. Responde con fechas y días restantes, y registra la conversación.\n\n**Listado estructurado (pantalla Calendario)**\n`POST /webhook/unab/calendario/lista`\n\n```json\n{ \"texto\": \"examen\", \"categoria\": \"examenes\" }\n```\n\nDevuelve `{ ok, total, eventos[] }` desde `unab.v_calendario_proximo`.",
+        "height": 440,
+        "width": 380,
+        "color": 4
+      }
+    },
+    {
+      "id": "6ff69166-ddfe-4676-b286-218d166f2002",
+      "name": "Webhook Calendario",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "unab/calendario",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "notes": "POST /webhook/unab/calendario",
+      "webhookId": "19dcd24f-4537-434f-89d5-4204093a615a"
+    },
+    {
+      "id": "aceb407a-cc1b-4bca-8e8a-7f5b6ffb38f8",
+      "name": "Normalizar Entrada",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        220,
+        0
+      ],
+      "parameters": {
+        "jsCode": "\n// Normaliza la petición de la app móvil o del chat de n8n.\nconst input = $input.first().json;\nconst body = input.body ?? input;\n\nconst session_id = String(\n  body.session_id || body.sessionId || body.chatId || input.sessionId || 'anon-' + Date.now()\n).slice(0, 100);\n\nconst pregunta = String(\n  body.pregunta || body.message || body.chatInput || body.text || input.chatInput || ''\n).trim();\n\nlet id_estudiante = body.id_estudiante || body.idEstudiante || null;\nid_estudiante = id_estudiante ? String(id_estudiante).trim() : null;\n\nreturn [{\n  json: {\n    session_id,\n    pregunta,\n    id_estudiante,\n    canal: String(body.canal || 'android').slice(0, 20),\n    fecha_actual: new Date().toISOString().slice(0, 10),\n    inicio_ms: Date.now()\n  }\n}];\n",
+        "options": {}
+      }
+    },
+    {
+      "id": "89f802a7-2e33-4022-91fc-dba12f7b522d",
+      "name": "¿Pregunta Válida?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        440,
+        0
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "cond-pregunta",
+              "leftValue": "={{ $json.pregunta }}",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "d138639d-032e-4ee3-88a1-e98a03224d51",
+      "name": "Agente Calendario",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        700,
+        -120
+      ],
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.pregunta }}\n\n---\nFecha actual: {{ $json.fecha_actual }}\nSugerencia de filtros por categoría: matricula, examenes, clases, pagos, ceremonia, general.",
+        "options": {
+          "systemMessage": "Eres \"UNAB Calendario\", el asistente de fechas académicas de la Universidad Autónoma de Bucaramanga.\n\nREGLAS\n1. Responde SIEMPRE en español, en máximo 180 palabras.\n2. SIEMPRE llama primero a obtener_periodo_activo y a consultar_calendario antes de responder. Nunca inventes fechas.\n3. Presenta las fechas en formato \"dd/mm/aaaa\" y, cuando exista, indica cuántos días faltan.\n4. Si no hay eventos para el filtro, dilo y sugiere consultar la categoría \"general\".\n5. No respondas temas distintos al calendario académico; en esos casos sugiere usar el asistente general.\n6. Cierra recordando que las fechas oficiales pueden cambiar y deben confirmarse en la Secretaría General."
+        }
+      }
+    },
+    {
+      "id": "9e7d9e6b-de09-46e0-a2f0-8772cecf0a9c",
+      "name": "MCP Client Calendario",
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1.4,
+      "position": [
+        940,
+        220
+      ],
+      "parameters": {
+        "endpointUrl": "https://directories-minimum-contracting-guarantees.trycloudflare.com/mcp",
+        "serverTransport": "httpStreamable",
+        "authentication": "bearerAuth",
+        "include": "selected",
+        "includeTools": [
+          "consultar_calendario",
+          "obtener_periodo_activo"
+        ],
+        "options": {
+          "timeout": 60000
+        }
+      },
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "eLUbftDxt17kI1Zn",
+          "name": "Bearer Auth account"
+        }
+      }
+    },
+    {
+      "id": "5fa64a44-74f8-4e7a-aef8-9656d0689479",
+      "name": "Memoria de Conversación",
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        1180,
+        220
+      ],
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Normalizar Entrada').first().json.session_id }}",
+        "tableName": "unab_chat_memory"
+      },
+      "credentials": {
+        "postgres": {
+          "id": "39iAaWBFxHtb71mo",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "id": "9ef16561-361b-476f-9a4a-495824de2257",
+      "name": "Respuesta Vacía",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        700,
+        80
+      ],
+      "parameters": {
+        "jsCode": "\nconst ctx = $('Normalizar Entrada').first().json;\nreturn [{\n  json: {\n    ...ctx,\n    respuesta: '¿Qué fecha académica quieres consultar? Por ejemplo: matrícula, exámenes finales o inicio de clases.',\n    tipo: 'calendario'\n  }\n}];\n",
+        "options": {}
+      }
+    },
+    {
+      "id": "285ae740-4e84-4beb-a4c9-017d91ccbbc7",
+      "name": "Formatear Respuesta",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1180,
+        -120
+      ],
+      "parameters": {
+        "jsCode": "\nconst ctx = $('Normalizar Entrada').first().json;\nconst out = $input.first().json;\n\nlet respuesta = out.output ?? out.text ?? out.respuesta ?? '';\nif (Array.isArray(respuesta)) {\n  respuesta = respuesta.map((r) => r.text ?? r.content ?? '').join('\\n');\n}\nrespuesta = String(respuesta || '').trim();\nif (!respuesta) {\n  respuesta = 'No pude generar una respuesta en este momento. Intenta reformular tu pregunta.';\n}\n\nreturn [{\n  json: {\n    session_id: ctx.session_id,\n    canal: ctx.canal,\n    id_estudiante: ctx.id_estudiante,\n    pregunta: ctx.pregunta,\n    respuesta,\n    tipo: 'calendario',\n    fuentes: [],\n    latencia_ms: Math.max(0, Date.now() - ctx.inicio_ms)\n  }\n}];\n",
+        "options": {}
+      }
+    },
+    {
+      "id": "25086509-2a6f-4e13-8741-4cc6cdfd4b5d",
+      "name": "Responder a la App",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1420,
+        -160
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ ok: true, session_id: $json.session_id, tipo: $json.tipo, respuesta: $json.respuesta, latencia_ms: $json.latencia_ms }) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "98eaef59-50f5-41d4-90dd-5f27ab3dcc32",
+      "name": "Registrar Conversación",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        1660,
+        -160
+      ],
+      "parameters": {
+        "operation": "insert",
+        "schema": {
+          "__rl": true,
+          "value": "unab",
+          "mode": "list",
+          "cachedResultName": "unab"
+        },
+        "table": {
+          "__rl": true,
+          "value": "conversaciones",
+          "mode": "list",
+          "cachedResultName": "conversaciones"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "session_id": "={{ $json.session_id }}",
+            "canal": "={{ $json.canal }}",
+            "id_estudiante": "={{ $json.id_estudiante }}",
+            "pregunta": "={{ $json.pregunta }}",
+            "respuesta": "={{ $json.respuesta }}",
+            "tipo": "={{ $json.tipo }}",
+            "fuentes": "={{ $json.fuentes }}",
+            "latencia_ms": "={{ $json.latencia_ms }}"
+          },
+          "matchingColumns": [],
+          "schema": []
+        },
+        "options": {}
+      },
+      "onError": "continueRegularOutput",
+      "credentials": {
+        "postgres": {
+          "id": "39iAaWBFxHtb71mo",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "id": "4a05da11-058e-4f2e-9ee2-254a64e577dc",
+      "name": "Webhook Calendario Lista",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        300
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "unab/calendario/lista",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "notes": "POST /webhook/unab/calendario/lista",
+      "webhookId": "27bd08fa-354a-4913-a3f3-9fddd852986b"
+    },
+    {
+      "id": "b37bd844-8805-4ff8-b689-b8a01bf5e89c",
+      "name": "Normalizar Filtro Calendario",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        300
+      ],
+      "parameters": {
+        "jsCode": "\nconst input = $input.first().json;\nconst body = input.body ?? input;\n// Normaliza a minúsculas y elimina diacriticos para que \"examen\" encuentre \"Examenes\".\nconst norm = (valor) => valor\n  ? String(valor).trim().toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g, '')\n  : null;\nreturn [{\n  json: {\n    texto: norm(body.texto),\n    categoria: norm(body.categoria)\n  }\n}];\n",
+        "options": {}
+      }
+    },
+    {
+      "id": "38998f92-3b80-4562-a1ae-40af68143dd8",
+      "name": "Consultar Calendario (SQL)",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        480,
+        300
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT id, periodo, evento, categoria, fecha_inicio, fecha_fin, descripcion, dias_faltantes\nFROM unab.v_calendario_proximo\nWHERE ($1::text IS NULL\n        OR translate(evento, 'ÁÉÍÓÚáéíóúÑñ', 'AEIOUaeiouNn') ILIKE '%' || $1 || '%'\n        OR translate(COALESCE(descripcion, ''), 'ÁÉÍÓÚáéíóúÑñ', 'AEIOUaeiouNn') ILIKE '%' || $1 || '%')\n  AND ($2::text IS NULL OR categoria = $2)\nORDER BY fecha_inicio\nLIMIT 60;",
+        "options": {
+          "queryReplacement": "={{ [$json.texto, $json.categoria] }}"
+        }
+      },
+      "credentials": {
+        "postgres": {
+          "id": "39iAaWBFxHtb71mo",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "id": "f8691728-b639-454b-9e64-5c4dbfbf8689",
+      "name": "Empaquetar Calendario",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        720,
+        300
+      ],
+      "parameters": {
+        "jsCode": "\nconst rows = $input.all().map((i) => i.json).filter((r) => r && r.id !== undefined && r.id !== null);\nreturn [{ json: { ok: true, total: rows.length, eventos: rows } }];\n",
+        "options": {}
+      }
+    },
+    {
+      "id": "2440d9c4-bf78-4ed0-92b2-2be99ce28d75",
+      "name": "Responder Lista Calendario",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        960,
+        300
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "ca99260f-f222-4296-80c1-9b6f4884950f",
+      "name": "Gemini Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        700,
+        220
+      ],
+      "parameters": {
+        "modelName": "models/gemini-3.5-flash-lite",
+        "options": {
+          "temperature": 0.2
+        }
+      },
+      "credentials": {
+        "googlePalmApi": {
+          "id": "7gB4tz09OzQfa3ba",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook Calendario": {
+      "main": [
+        [
+          {
+            "node": "Normalizar Entrada",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalizar Entrada": {
+      "main": [
+        [
+          {
+            "node": "¿Pregunta Válida?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Pregunta Válida?": {
+      "main": [
+        [
+          {
+            "node": "Agente Calendario",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respuesta Vacía",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente Calendario": {
+      "main": [
+        [
+          {
+            "node": "Formatear Respuesta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respuesta Vacía": {
+      "main": [
+        [
+          {
+            "node": "Formatear Respuesta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formatear Respuesta": {
+      "main": [
+        [
+          {
+            "node": "Responder a la App",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Responder a la App": {
+      "main": [
+        [
+          {
+            "node": "Registrar Conversación",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client Calendario": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente Calendario",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Memoria de Conversación": {
+      "ai_memory": [
+        [
+          {
+            "node": "Agente Calendario",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook Calendario Lista": {
+      "main": [
+        [
+          {
+            "node": "Normalizar Filtro Calendario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalizar Filtro Calendario": {
+      "main": [
+        [
+          {
+            "node": "Consultar Calendario (SQL)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consultar Calendario (SQL)": {
+      "main": [
+        [
+          {
+            "node": "Empaquetar Calendario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Empaquetar Calendario": {
+      "main": [
+        [
+          {
+            "node": "Responder Lista Calendario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agente Calendario",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "versionId": "07e68d6f-23ea-4e28-8596-b0e57da8916a",
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": [],
+  "pinData": {}
+}

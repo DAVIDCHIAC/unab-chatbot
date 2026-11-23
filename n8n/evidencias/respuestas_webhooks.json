@@ -1,0 +1,428 @@
+{
+  "fecha": "2026-11-22 21:20:49 UTC",
+  "base_url": "https://unab-chatbot.app.n8n.cloud",
+  "total": 6,
+  "correctos": 6,
+  "resultados": [
+    {
+      "workflow": "WF01 RAG",
+      "ruta": "/webhook/unab/rag",
+      "payload": {
+        "session_id": "evidencia-001",
+        "pregunta": "¿Cuáles son los requisitos de grado?",
+        "id_estudiante": "10045234",
+        "canal": "evidencia"
+      },
+      "http_status": 200,
+      "respuesta": {
+        "ok": true,
+        "session_id": "evidencia-001",
+        "tipo": "rag",
+        "respuesta": "Para obtener tu título de grado en la UNAB, debes cumplir con los siguientes requisitos fundamentales:\n\n1. **Aprobar el 100% de los créditos** correspondientes a tu plan de estudios.\n2. Mantener un **promedio acumulado mínimo de 3.0**.\n3. Realizar y aprobar la **práctica profesional o el trabajo de grado** (según aplique a tu programa).\n4. Cumplir con el requisito de **suficiencia en segunda lengua** y las **competencias digitales** del CCD.\n5. Estar a **paz y salvo** por todo concepto con la universidad (financiero, biblioteca, laboratorios, etc.).\n6. Presentar la **solicitud formal de grado** en la oficina de Registro Académico dentro de las fechas establecidas en el calendario institucional.\n\nSi quieres que revise cómo vas con tu avance de créditos o tu promedio actual, ¡avísame y lo consultamos!\n\nFuente: proceso_grado.md",
+        "latencia_ms": 3937
+      }
+    },
+    {
+      "workflow": "WF02 Calendario chat",
+      "ruta": "/webhook/unab/calendario",
+      "payload": {
+        "session_id": "evidencia-002",
+        "pregunta": "¿Cuándo son los exámenes finales?",
+        "canal": "evidencia"
+      },
+      "http_status": 200,
+      "respuesta": {
+        "ok": true,
+        "session_id": "evidencia-002",
+        "tipo": "calendario",
+        "respuesta": "Para el periodo académico activo (Segundo semestre 2026, del 15/07/2026 al 30/11/2026), los exámenes finales programados son:\n\n* **Exámenes finales:** Del 26/11/2026 al 03/12/2026 (faltan 4 días). *Semana de evaluaciones finales. Consulta el horario publicado por tu facultad.*\n* **Primer corte evaluativo:** Del 10/02/2027 al 14/02/2027 (faltan 80 días).\n* **Segundo corte evaluativo:** Del 10/03/2027 al 14/03/2027 (faltan 108 días).\n* **Exámenes finales del siguiente ciclo:** Del 11/04/2027 al 20/04/2027 (faltan 140 días).\n\nRecuerda que las fechas oficiales pueden cambiar y deben confirmarse en la Secretaría General.",
+        "latencia_ms": 3969
+      }
+    },
+    {
+      "workflow": "WF03 Académico chat",
+      "ruta": "/webhook/unab/academico",
+      "payload": {
+        "session_id": "evidencia-003",
+        "pregunta": "¿Cuál es mi avance y qué cursos tengo pendientes?",
+        "id_estudiante": "10045234",
+        "canal": "evidencia"
+      },
+      "http_status": 200,
+      "respuesta": {
+        "ok": true,
+        "session_id": "evidencia-003",
+        "tipo": "academico",
+        "respuesta": "**a) Resumen del estado académico:**\nEstás matriculado en el **3er semestre** de **Ingeniería de Sistemas** con un promedio acumulado de **3.69**. Has aprobado **30 créditos** (18.8% de avance total del plan de estudios) y tienes 14 créditos en curso. Se proyecta que te falten unos 8 semestres para culminar tu carrera.\n\n**b) Cursos aprobados y pendientes:**\n- **Aprobados:** 10 asignaturas.\n- **En curso:** 4 asignaturas.\n- **Pendientes:** Tienes **37 asignaturas** pendientes por cursar para completar tu malla curricular.\n\n**c) Riesgos y bloqueos por prerrequisitos:**\n- Tienes **1 asignatura reprobada**: *Cálculo Integral* (con calificación de 2.4).\n- Tienes **6 cursos bloqueados** actualmente: *Cálculo Multivariado* por no tener aprobado su prerrequisito, y otras 5 materias (como *Bases de Datos II*, *Sistemas Operativos*, entre otras) debido a que sus prerrequisitos están pendientes o en curso.\n\n**d) Recomendación:**\nEs fundamental que planifiques la recuperación de *Cálculo Integral* para destrabar las materias de matemáticas avanzadas. Te sugiero agendar una cita con el **director de tu programa** para revisar tu ruta académica y estructurar de manera óptima tu próxima matrícula.",
+        "latencia_ms": 2946
+      }
+    },
+    {
+      "workflow": "WF02 Calendario lista",
+      "ruta": "/webhook/unab/calendario/lista",
+      "payload": {
+        "texto": "examen"
+      },
+      "http_status": 200,
+      "respuesta": {
+        "ok": true,
+        "total": 2,
+        "eventos": [
+          {
+            "id": "43",
+            "periodo": "2026-2",
+            "evento": "Exámenes finales",
+            "categoria": "examenes",
+            "fecha_inicio": "2026-11-26T00:00:00.000Z",
+            "fecha_fin": "2026-12-03T00:00:00.000Z",
+            "descripcion": "Semana de evaluaciones finales. Consulta el horario publicado por tu facultad.",
+            "dias_faltantes": 4
+          },
+          {
+            "id": "50",
+            "periodo": "2026-2",
+            "evento": "Exámenes finales del siguiente ciclo",
+            "categoria": "examenes",
+            "fecha_inicio": "2027-04-11T00:00:00.000Z",
+            "fecha_fin": "2027-04-20T00:00:00.000Z",
+            "descripcion": "Evaluaciones finales del semestre en curso.",
+            "dias_faltantes": 140
+          }
+        ]
+      }
+    },
+    {
+      "workflow": "WF03 Resumen académico",
+      "ruta": "/webhook/unab/academico/resumen",
+      "payload": {
+        "id_estudiante": "10045234"
+      },
+      "http_status": 200,
+      "respuesta": {
+        "ok": true,
+        "estado": {
+          "id_estudiante": "10045234",
+          "nombre_completo": "Jhon García",
+          "email": "j.garcia@unab.edu.co",
+          "telefono": "3101110004",
+          "codigo_programa": "ING-SIS",
+          "programa": "Ingeniería de Sistemas",
+          "semestre_actual": 3,
+          "fecha_ingreso": "2025-01-20",
+          "estado_estudiante": "activo",
+          "promedio_acumulado": 3.69,
+          "cursos_registrados": 15,
+          "cursos_aprobados": 10,
+          "cursos_en_curso": 4,
+          "cursos_reprobados": 1,
+          "creditos_aprobados": 30,
+          "creditos_en_curso": 14
+        },
+        "avance": {
+          "id_estudiante": "10045234",
+          "nombre_completo": "Jhon García",
+          "programa": "Ingeniería de Sistemas",
+          "creditos_totales": 160,
+          "semestres_totales": 10,
+          "semestre_actual": 3,
+          "creditos_aprobados": 30,
+          "creditos_pendientes": 130,
+          "porcentaje_avance": 18.8,
+          "promedio_acumulado": 3.69
+        },
+        "proyeccion": {
+          "id_estudiante": "10045234",
+          "nombre_completo": "Jhon García",
+          "programa": "Ingeniería de Sistemas",
+          "semestre_actual": 3,
+          "creditos_totales": 160,
+          "creditos_aprobados": 30,
+          "creditos_en_curso": 14,
+          "creditos_restantes": 116,
+          "ritmo_creditos_semestre": 15,
+          "semestres_restantes_estimados": 8,
+          "semestre_proyectado_grado": 11,
+          "porcentaje_avance": 18.8
+        },
+        "alertas": [
+          {
+            "id_estudiante": "10045234",
+            "nombre_completo": "Jhon García",
+            "semestre_actual": 3,
+            "promedio_acumulado": 3.69,
+            "cursos_reprobados": 1,
+            "cursos_bloqueados": 6,
+            "cursos_en_curso": 4,
+            "alertas": [
+              "Tiene asignaturas reprobadas",
+              "Tiene cursos bloqueados por prerrequisito"
+            ]
+          }
+        ],
+        "bloqueados": [
+          {
+            "curso_bloqueado": "IS301",
+            "nombre_curso": "Cálculo Multivariado",
+            "semestre_sugerido": 3,
+            "codigo_prerequisito": "IS201",
+            "nombre_prerequisito": "Cálculo Integral",
+            "estado_prerequisito": "reprobado",
+            "tipo_bloqueo": "prerrequisito_reprobado",
+            "nota_prerequisito": 2.4
+          },
+          {
+            "curso_bloqueado": "IS401",
+            "nombre_curso": "Ecuaciones Diferenciales",
+            "semestre_sugerido": 4,
+            "codigo_prerequisito": "IS301",
+            "nombre_prerequisito": "Cálculo Multivariado",
+            "estado_prerequisito": "pendiente",
+            "tipo_bloqueo": "prerrequisito_pendiente",
+            "nota_prerequisito": null
+          },
+          {
+            "curso_bloqueado": "IS402",
+            "nombre_curso": "Bases de Datos II",
+            "semestre_sugerido": 4,
+            "codigo_prerequisito": "IS304",
+            "nombre_prerequisito": "Bases de Datos I",
+            "estado_prerequisito": "en_curso",
+            "tipo_bloqueo": "prerrequisito_en_curso",
+            "nota_prerequisito": null
+          },
+          {
+            "curso_bloqueado": "IS403",
+            "nombre_curso": "Análisis de Algoritmos",
+            "semestre_sugerido": 4,
+            "codigo_prerequisito": "IS303",
+            "nombre_prerequisito": "Estructuras de Datos",
+            "estado_prerequisito": "en_curso",
+            "tipo_bloqueo": "prerrequisito_en_curso",
+            "nota_prerequisito": null
+          },
+          {
+            "curso_bloqueado": "IS404",
+            "nombre_curso": "Sistemas Operativos",
+            "semestre_sugerido": 4,
+            "codigo_prerequisito": "IS305",
+            "nombre_prerequisito": "Arquitectura de Computadores",
+            "estado_prerequisito": "en_curso",
+            "tipo_bloqueo": "prerrequisito_en_curso",
+            "nota_prerequisito": null
+          },
+          {
+            "curso_bloqueado": "IS405",
+            "nombre_curso": "Ingeniería de Software I",
+            "semestre_sugerido": 4,
+            "codigo_prerequisito": "IS303",
+            "nombre_prerequisito": "Estructuras de Datos",
+            "estado_prerequisito": "en_curso",
+            "tipo_bloqueo": "prerrequisito_en_curso",
+            "nota_prerequisito": null
+          }
+        ],
+        "historial": [
+          {
+            "codigo_curso": "IS302",
+            "curso": "Física II",
+            "creditos": 4,
+            "semestre_sugerido": 3,
+            "area": "Ciencias Básicas",
+            "periodo": "2026-1",
+            "nota": null,
+            "estado": "en_curso",
+            "intento": 1
+          },
+          {
+            "codigo_curso": "IS303",
+            "curso": "Estructuras de Datos",
+            "creditos": 4,
+            "semestre_sugerido": 3,
+            "area": "Software",
+            "periodo": "2026-1",
+            "nota": null,
+            "estado": "en_curso",
+            "intento": 1
+          },
+          {
+            "codigo_curso": "IS304",
+            "curso": "Bases de Datos I",
+            "creditos": 3,
+            "semestre_sugerido": 3,
+            "area": "Datos",
+            "periodo": "2026-1",
+            "nota": null,
+            "estado": "en_curso",
+            "intento": 1
+          },
+          {
+            "codigo_curso": "IS305",
+            "curso": "Arquitectura de Computadores",
+            "creditos": 3,
+            "semestre_sugerido": 3,
+            "area": "Infraestructura",
+            "periodo": "2026-1",
+            "nota": null,
+            "estado": "en_curso",
+            "intento": 1
+          },
+          {
+            "codigo_curso": "IS201",
+            "curso": "Cálculo Integral",
+            "creditos": 4,
+            "semestre_sugerido": 2,
+            "area": "Ciencias Básicas",
+            "periodo": "2025-2",
+            "nota": 2.4,
+            "estado": "reprobado",
+            "intento": 1
+          },
+          {
+            "codigo_curso": "IS202",
+            "curso": "Física I",
+            "creditos": 4,
+            "semestre_sugerido": 2,
+            "area": "Ciencias Básicas",
+            "periodo": "2025-2",
+            "nota": 4.1,
+            "estado": "aprobado",
+            "intento": 1
+          },
+          {
+            "codigo_curso": "IS203",
+            "curso": "Programación II",
+            "creditos": 4,
+            "semestre_sugerido": 2,
+            "area": "Software",
+            "periodo": "2025-2",
+            "nota": 3.2,
+            "estado": "aprobado",
+            "intento": 1
+          },
+          {
+            "codigo_curso": "IS204",
+            "curso": "Estructuras Discretas",
+            "creditos": 3,
+            "semestre_sugerido": 2,
+            "area": "Ciencias Básicas",
+            "periodo": "2025-2",
+            "nota": 3.6,
+            "estado": "aprobado",
+            "intento": 1
+          },
+          {
+            "codigo_curso": "IS205",
+            "curso": "Estadística Descriptiva",
+            "creditos": 3,
+            "semestre_sugerido": 2,
+            "area": "Ciencias Básicas",
+            "periodo": "2025-2",
+            "nota": 3.8,
+            "estado": "aprobado",
+            "intento": 1
+          },
+          {
+            "codigo_curso": "IS101",
+            "curso": "Cálculo Diferencial",
+            "creditos": 4,
+            "semestre_sugerido": 1,
+            "area": "Ciencias Básicas",
+            "periodo": "2025-1",
+            "nota": 4.2,
+            "estado": "aprobado",
+            "intento": 1
+          },
+          {
+            "codigo_curso": "IS102",
+            "curso": "Álgebra Lineal",
+            "creditos": 3,
+            "semestre_sugerido": 1,
+            "area": "Ciencias Básicas",
+            "periodo": "2025-1",
+            "nota": 3.4,
+            "estado": "aprobado",
+            "intento": 1
+          },
+          {
+            "codigo_curso": "IS103",
+            "curso": "Introducción a la Ingeniería de Sistemas",
+            "creditos": 2,
+            "semestre_sugerido": 1,
+            "area": "Ingeniería Aplicada",
+            "periodo": "2025-1",
+            "nota": 5,
+            "estado": "aprobado",
+            "intento": 1
+          },
+          {
+            "codigo_curso": "IS104",
+            "curso": "Programación I",
+            "creditos": 4,
+            "semestre_sugerido": 1,
+            "area": "Software",
+            "periodo": "2025-1",
+            "nota": 4.9,
+            "estado": "aprobado",
+            "intento": 1
+          },
+          {
+            "codigo_curso": "IS105",
+            "curso": "Competencias Comunicativas",
+            "creditos": 2,
+            "semestre_sugerido": 1,
+            "area": "Humanidades",
+            "periodo": "2025-1",
+            "nota": 3,
+            "estado": "aprobado",
+            "intento": 1
+          },
+          {
+            "codigo_curso": "IS106",
+            "curso": "Cátedra UNAB",
+            "creditos": 1,
+            "semestre_sugerido": 1,
+            "area": "Humanidades",
+            "periodo": "2025-1",
+            "nota": 3,
+            "estado": "aprobado",
+            "intento": 1
+          }
+        ]
+      }
+    },
+    {
+      "workflow": "WF04 Noticias",
+      "ruta": "/webhook/unab/noticias",
+      "payload": {
+        "texto": "sostenibilidad"
+      },
+      "http_status": 200,
+      "respuesta": {
+        "ok": true,
+        "total": 2,
+        "noticias": [
+          {
+            "id": "23",
+            "titulo": "UNAB, primer lugar como universidad de Santander en medición internacional de sostenibilidad",
+            "resumen": "UNAB, primer lugar como universidad de Santander en medición internacional de sostenibilidad Caracol Radio",
+            "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxQZlNVazl1VGU1TUNGZEVCU2JXaVVXX2YwWF9wenBOa1dMbUhNSEphZi1ObjNERS04OFNaY29lOUhaeThIRkFWLXhMV3RmVFRKc0RUbDhvcUcxRVpKWjd4b0lfOElWZEFiUEkwUkdoeUhyc3N3Snk5Ti1palczQUVJZmludEhDdHlUMUhseGdYdW53YVltWEJOVG5GeGJqMzBHNU4xU2RBcy1Db2haeGZqZUFDR1ZzaTJ4Vnd4ZDMzZGk1WkdY0gHYAUFVX3lxTE5sUG5CRXJQYjFJeUstMUNTcS1JWHBtWkI3cWhjMDBxYWxMdXlfaHpOc2pYakdDNVg4UjcyVUhCZlZwMl9vejRmNzBxTG5Jel9hbzJnX29maktVeHNKQkZUaVNyaWE0ZE5YdGdLdnRwdEtibVJpUHRoT1NwWnpBWUhPT0RNUHVxR0MyWUpheUJ4UWM5cjU5SW9Fc0ZGLTdPczJ1ajh4THNFRUNsYUNZTmh2RFdDNUpHdEJkWk5SLUxoUFhtWkNLVEhkSjVfWTEzUXBsdTFCRHczRg?oc=5",
+            "fuente": "Caracol Radio",
+            "categoria": "noticia",
+            "fecha_publicacion": "2026-11-22T00:00:00.000Z",
+            "dias_publicada": 0
+          },
+          {
+            "id": "28",
+            "titulo": "UNAB, primer lugar como universidad de Santander en medición internacional de sostenibilidad",
+            "resumen": "UNAB, primer lugar como universidad de Santander en medición internacional de sostenibilidad Caracol Radio",
+            "url": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxObFBuQkVyUGIxSXlLLTFDU3EtSVhwbVpCN3FoYzAwcWFsTHV5X2h6TnNqWGpHQzVYOFI3MlVIQmZWcDJfb3o0ZjcwcUxuSXpfYW8yZ19vZmpLVXhzSkJGVGlTcmlhNGROWHRnS3Z0cHRLYm1SaVB0aE9TcFp6QVlIT09ETVB1cUdDMllKYXlCeFFjOXI1OUlvRXNGRi03T3MydWo4eExzRUVDbGFDWU5odkRXQzVKR3RCZFpOUi1MaFBYbVpDS1RIZEo1X1kxM1FwbHUxQkR3M0bSAdgBQVVfeXFMTmxQbkJFclBiMUl5Sy0xQ1NxLUlYcG1aQjdxaGMwMHFhbEx1eV9oek5zalhqR0M1WDhSNzJVSEJmVnAyX296NGY3MHFMbkl6X2FvMmdfb2ZqS1V4c0pCRlRpU3JpYTRkTlh0Z0t2dHB0S2JtUmlQdGhPU3BaekFZSE9PRE1QdXFHQzJZSmF5QnhRYzlyNTlJb0VzRkYtN09zMnVqOHhMc0VFQ2xhQ1lOaHZEV0M1Skd0QmRaTlItTGhQWG1aQ0tUSGRKNV9ZMTNRcGx1MUJEdzNG?oc=5",
+            "fuente": "Caracol Radio",
+            "categoria": "noticia",
+            "fecha_publicacion": "2026-11-22T00:00:00.000Z",
+            "dias_publicada": 0
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+# Misceláneos de Flutter/Dart
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# IntelliJ / Android Studio
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Visual Studio Code
+.vscode/
+
+# Flutter/Dart/Pub
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+
+# El APK release se versiona como evidencia; el resto de /build/ se ignora.
+!/build/
+/build/*
+!/build/app/
+/build/app/*
+!/build/app/outputs/
+/build/app/outputs/*
+!/build/app/outputs/apk/
+/build/app/outputs/apk/*
+!/build/app/outputs/apk/release/
+/build/app/outputs/apk/release/*
+!/build/app/outputs/apk/release/app-release.apk
+
+coverage/
+
+# Símbolos y ofuscación
+app.*.symbols
+app.*.map.json
+
+# Android
+**/android/**/gradle-wrapper.jar
+**/android/.gradle
+**/android/captures/
+**/android/gradlew
+**/android/gradlew.bat
+**/android/local.properties
+**/android/**/GeneratedPluginRegistrant.java
+**/android/key.properties
+*.jks
+*.keystore
+
+# iOS / macOS (no se generan, pero por si acaso)
+**/ios/Flutter/ephemeral
+**/ios/Pods/
+**/ios/.symlinks/
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/macos/Flutter/ephemeral
+
+# Web / Windows / Linux
+**/web/build/
+**/windows/flutter/ephemeral/
+**/linux/flutter/ephemeral/
+
+# Secretos y configuración local
+.env
+.env.*
+!.env.example
+*.pem

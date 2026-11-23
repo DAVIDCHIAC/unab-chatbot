@@ -1,0 +1,7 @@
+[Unit]
+Description=Sincroniza el hostname del túnel de Cloudflare con el MCP UNAB
+After=cloudflared-unab.service
+
+[Service]
+Type=oneshot
+ExecStart=/home/ubuntu/unab-chatbot/mcp-server/deploy/sync_tunel.sh

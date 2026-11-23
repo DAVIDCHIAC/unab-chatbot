@@ -1,0 +1,10 @@
+# Servidor MCP
+mcp>=1.9,<2
+
+# Base de datos
+psycopg2-binary>=2.9,<3
+
+# Configuración y HTTP
+python-dotenv>=1.0,<2
+httpx>=0.27,<1
+uvicorn>=0.30,<1

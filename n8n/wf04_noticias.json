@@ -1,0 +1,464 @@
+{
+  "name": "UNAB WF04 · Noticias y convocatorias",
+  "nodes": [
+    {
+      "id": "6c57d0c6-8055-4486-b735-11040e8f8a24",
+      "name": "Notas WF04",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -460,
+        -40
+      ],
+      "parameters": {
+        "content": "## WF04 · Noticias y convocatorias\n\n**Rama A — ingesta automática (cada 6 h)**\n`Cada 6 horas` → `Leer RSS` → `Normalizar Noticias` → `Guardar Noticias (upsert)` → `Preparar Notificación` → `Enviar Push FCM` (deshabilitado).\n\n**Rama B — consulta desde la app**\n`POST /webhook/unab/noticias`\n\n```json\n{\n  \"session_id\": \"ses-004\",\n  \"texto\": \"becas\",\n  \"categoria\": \"beca\"\n}\n```\n\nLa rama B lee la vista `unab.v_noticias_recientes` y responde\n`{ ok, total, noticias[] }` para la pantalla de Noticias.\n\n**Importante**\n- Cambia la URL del RSS si quieres una fuente oficial distinta.\n- Configura la credencial Postgres de Supabase.\n- El nodo FCM está deshabilitado: actívalo cuando tengas la clave del proyecto Firebase.",
+        "height": 560,
+        "width": 420,
+        "color": 4
+      }
+    },
+    {
+      "id": "76ad886f-9dda-4bf1-9408-692189146274",
+      "name": "Cada 6 horas",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        -200
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 6
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "a8306dab-9d25-4aa1-89ba-0deda4a59fcc",
+      "name": "Leer RSS Google News",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        240,
+        -200
+      ],
+      "parameters": {
+        "url": "https://news.google.com/rss/search?q=UNAB+Bucaramanga+(educaci%C3%B3n+OR+tecnolog%C3%ADa+OR+%22ingenier%C3%ADa+de+sistemas%22)+when%3A45d&hl=es-419&gl=CO&ceid=CO:es-419",
+        "options": {}
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "0ad57cd9-8bde-4d34-ad45-2d85e24c5d19",
+      "name": "Normalizar Noticias",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        -200
+      ],
+      "parameters": {
+        "jsCode": "\n// Convierte los ítems de DOS fuentes RSS en filas listas para unab.noticias.\n// Filtros: publicados en los últimos 45 días (fecha actual) y temas de interés.\nconst DIAS = 45;\nconst limite = Date.now() - DIAS * 24 * 60 * 60 * 1000;\nconst TEMAS = /educaci[oó]n|universidad|acad[eé]mic|estudiante|tecnolog[ií]a|ingenier[ií]a|sistemas|software|convocatoria|beca|investigaci[oó]n/i;\n\nconst out = [];\nconst seen = new Set();\n\nfor (const item of $input.all()) {\n  const j = item.json || {};\n  const url = String(j.link || j.guid || '').trim();\n  if (!url || seen.has(url)) continue;\n\n  const rawTitle = String(j.title || '').trim();\n  const cut = rawTitle.lastIndexOf(' - ');\n  const titulo = (cut > 10 ? rawTitle.slice(0, cut) : rawTitle).slice(0, 300);\n  const fuente = (cut > 10 ? rawTitle.slice(cut + 3) : (j.creator || 'Google News')).slice(0, 120);\n\n  const clean = (html) => String(html || '')\n    .replace(/<[^>]+>/g, ' ')\n    .replace(/&nbsp;/g, ' ')\n    .replace(/&amp;/g, '&')\n    .replace(/&quot;/g, '\"')\n    .replace(/&#39;/g, \"'\")\n    .replace(/\\s+/g, ' ')\n    .trim();\n\n  const resumen = clean(j.contentSnippet || j.content).slice(0, 600) || null;\n  const contenido = clean(j.content) || null;\n  const texto = (titulo + ' ' + (resumen || '')).toLowerCase();\n\n  // Filtro temático: educación / tecnología / ingeniería de sistemas.\n  if (!TEMAS.test(texto)) continue;\n\n  const raw = j.isoDate || j.pubDate;\n  let fecha = new Date().toISOString().slice(0, 10);\n  let timestamp = Date.now();\n  if (raw) {\n    const d = new Date(raw);\n    if (!isNaN(d.getTime())) {\n      timestamp = d.getTime();\n      fecha = d.toISOString().slice(0, 10);\n    }\n  }\n  // Filtro temporal equivalente a CURRENT_DATE - INTERVAL '45 days' en SQL.\n  if (timestamp < limite) continue;\n\n  seen.add(url);\n  let categoria = 'noticia';\n  if (/(beca|financiaci|apoyo econ)/.test(texto)) categoria = 'beca';\n  else if (/(convocatoria|inscripci|postulaci)/.test(texto)) categoria = 'convocatoria';\n  else if (/(evento|seminario|conferencia|foro|taller)/.test(texto)) categoria = 'evento';\n  else if (/(curso|diplomado|programa)/.test(texto)) categoria = 'curso';\n\n  out.push({\n    json: {\n      titulo,\n      resumen,\n      contenido,\n      url,\n      fuente,\n      categoria,\n      fecha_publicacion: fecha,\n      fecha_scrape: new Date().toISOString()\n    }\n  });\n}\n\nreturn out;\n",
+        "options": {}
+      }
+    },
+    {
+      "id": "fb423b2f-66db-4c94-87bd-7f03fc841277",
+      "name": "Guardar Noticias (upsert)",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        740,
+        -200
+      ],
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "value": "unab",
+          "mode": "list",
+          "cachedResultName": "unab"
+        },
+        "table": {
+          "__rl": true,
+          "value": "noticias",
+          "mode": "list",
+          "cachedResultName": "noticias"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "titulo": "={{ $json.titulo }}",
+            "resumen": "={{ $json.resumen }}",
+            "contenido": "={{ $json.contenido }}",
+            "url": "={{ $json.url }}",
+            "fuente": "={{ $json.fuente }}",
+            "categoria": "={{ $json.categoria }}",
+            "fecha_publicacion": "={{ $json.fecha_publicacion }}",
+            "fecha_scrape": "={{ $json.fecha_scrape }}"
+          },
+          "matchingColumns": [
+            "url"
+          ],
+          "schema": []
+        },
+        "options": {}
+      },
+      "onError": "continueRegularOutput",
+      "credentials": {
+        "postgres": {
+          "id": "39iAaWBFxHtb71mo",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "id": "db80b955-450b-4e72-a993-7277bce52971",
+      "name": "Preparar Notificación",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        980,
+        -200
+      ],
+      "parameters": {
+        "jsCode": "\nconst rows = $input.all().map((i) => i.json).filter((r) => r && r.id);\n\nif (rows.length === 0) {\n  return [{ json: { enviar: false, total: 0, mensaje: 'Sin noticias nuevas.' } }];\n}\n\nconst top = rows.slice(0, 5).map((n) => ({\n  id: n.id,\n  titulo: n.titulo,\n  categoria: n.categoria,\n  url: n.url\n}));\n\nreturn [{\n  json: {\n    enviar: true,\n    total: rows.length,\n    titulo: 'Nuevas noticias y convocatorias UNAB',\n    cuerpo: rows.length === 1\n      ? 'Hay una nueva publicación en el tablero UNAB.'\n      : `Hay ${rows.length} nuevas publicaciones en el tablero UNAB.`,\n    noticias: top\n  }\n}];\n",
+        "options": {}
+      }
+    },
+    {
+      "id": "a1d23589-e922-46ce-9552-f98d1015d8b4",
+      "name": "Enviar Push FCM",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1220,
+        -200
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://fcm.googleapis.com/v1/projects/TU_PROYECTO/messages:send",
+        "authentication": "none",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ message: { topic: 'unab_noticias', notification: { title: $json.titulo, body: $json.cuerpo }, data: { noticias: JSON.stringify($json.noticias) } } }) }}",
+        "options": {}
+      },
+      "disabled": true,
+      "notes": "Deshabilitado hasta configurar Firebase Cloud Messaging."
+    },
+    {
+      "id": "099ba8c9-8bb9-4389-ad91-e9eb1aec843b",
+      "name": "Webhook Noticias",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        220
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "unab/noticias",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "notes": "POST /webhook/unab/noticias",
+      "webhookId": "e74ab9aa-19df-4ee4-b274-ea91e87995b8"
+    },
+    {
+      "id": "ed80c2c5-6b4b-4dd9-89b1-48a09574862c",
+      "name": "Normalizar Consulta",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        240,
+        220
+      ],
+      "parameters": {
+        "jsCode": "\nconst input = $input.first().json;\nconst body = input.body ?? input;\n\nreturn [{\n  json: {\n    session_id: String(body.session_id || body.sessionId || 'anon-' + Date.now()).slice(0, 100),\n    texto: body.texto ? String(body.texto).trim() : null,\n    categoria: body.categoria ? String(body.categoria).trim().toLowerCase() : null,\n    canal: String(body.canal || 'android').slice(0, 20),\n    inicio_ms: Date.now()\n  }\n}];\n",
+        "options": {}
+      }
+    },
+    {
+      "id": "97a406ee-e04c-4e25-8271-a0682c1ce465",
+      "name": "Consultar Noticias (SQL)",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        480,
+        220
+      ],
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT id, titulo, resumen, url, fuente, categoria, fecha_publicacion, dias_publicada\nFROM unab.v_noticias_recientes\nWHERE fecha_publicacion >= CURRENT_DATE - INTERVAL '45 days'\n  AND ($1::text IS NULL OR titulo ILIKE '%' || $1 || '%' OR COALESCE(resumen, '') ILIKE '%' || $1 || '%')\n  AND ($2::text IS NULL OR categoria = $2)\nORDER BY fecha_publicacion DESC\nLIMIT 20;",
+        "options": {
+          "queryReplacement": "={{ [$json.texto, $json.categoria] }}"
+        }
+      },
+      "credentials": {
+        "postgres": {
+          "id": "39iAaWBFxHtb71mo",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "id": "2d873d2a-5a8e-400b-81dd-4f47e3fa8c26",
+      "name": "Formatear Noticias",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        740,
+        220
+      ],
+      "parameters": {
+        "jsCode": "\nconst ctx = $('Normalizar Consulta').first().json;\nconst rows = $input.all().map((i) => i.json).filter((r) => r && r.titulo);\n\nconst respuesta = rows.length\n  ? `Se encontraron ${rows.length} noticias o convocatorias.`\n  : 'No se encontraron noticias o convocatorias con ese filtro.';\n\nreturn [{\n  json: {\n    ok: true,\n    total: rows.length,\n    noticias: rows,\n    session_id: ctx.session_id,\n    canal: ctx.canal,\n    id_estudiante: null,\n    pregunta: ctx.texto || 'Noticias y convocatorias UNAB',\n    respuesta,\n    tipo: 'noticias',\n    fuentes: [],\n    latencia_ms: Math.max(0, Date.now() - ctx.inicio_ms)\n  }\n}];\n",
+        "options": {}
+      }
+    },
+    {
+      "id": "5690f702-d008-48f9-be9f-0acf151184c6",
+      "name": "Responder Noticias",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        980,
+        220
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ ok: $json.ok, total: $json.total, noticias: $json.noticias }) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              },
+              {
+                "name": "Cache-Control",
+                "value": "no-store"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": "bbbe39c5-a5af-46f0-a8fb-c9037a0aa470",
+      "name": "Registrar Consulta Noticias",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.5,
+      "position": [
+        1220,
+        220
+      ],
+      "parameters": {
+        "operation": "insert",
+        "schema": {
+          "__rl": true,
+          "value": "unab",
+          "mode": "list",
+          "cachedResultName": "unab"
+        },
+        "table": {
+          "__rl": true,
+          "value": "conversaciones",
+          "mode": "list",
+          "cachedResultName": "conversaciones"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "session_id": "={{ $json.session_id }}",
+            "canal": "={{ $json.canal }}",
+            "id_estudiante": "={{ $json.id_estudiante }}",
+            "pregunta": "={{ $json.pregunta }}",
+            "respuesta": "={{ $json.respuesta }}",
+            "tipo": "={{ $json.tipo }}",
+            "fuentes": "={{ $json.fuentes }}",
+            "latencia_ms": "={{ $json.latencia_ms }}"
+          },
+          "matchingColumns": [],
+          "schema": []
+        },
+        "options": {}
+      },
+      "onError": "continueRegularOutput",
+      "credentials": {
+        "postgres": {
+          "id": "39iAaWBFxHtb71mo",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://news.google.com/rss/search?q=%22Universidad+Aut%C3%B3noma+de+Bucaramanga%22+when%3A45d&hl=es-419&gl=CO&ceid=CO:es-419",
+        "options": {}
+      },
+      "id": "rss-unab-institucional",
+      "name": "Leer RSS UNAB institucional",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        240,
+        40
+      ]
+    }
+  ],
+  "connections": {
+    "Cada 6 horas": {
+      "main": [
+        [
+          {
+            "node": "Leer RSS Google News",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Leer RSS UNAB institucional",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer RSS Google News": {
+      "main": [
+        [
+          {
+            "node": "Normalizar Noticias",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalizar Noticias": {
+      "main": [
+        [
+          {
+            "node": "Guardar Noticias (upsert)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Guardar Noticias (upsert)": {
+      "main": [
+        [
+          {
+            "node": "Preparar Notificación",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Notificación": {
+      "main": [
+        [
+          {
+            "node": "Enviar Push FCM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook Noticias": {
+      "main": [
+        [
+          {
+            "node": "Normalizar Consulta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalizar Consulta": {
+      "main": [
+        [
+          {
+            "node": "Consultar Noticias (SQL)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consultar Noticias (SQL)": {
+      "main": [
+        [
+          {
+            "node": "Formatear Noticias",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formatear Noticias": {
+      "main": [
+        [
+          {
+            "node": "Responder Noticias",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Responder Noticias": {
+      "main": [
+        [
+          {
+            "node": "Registrar Consulta Noticias",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer RSS UNAB institucional": {
+      "main": [
+        [
+          {
+            "node": "Normalizar Noticias",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "versionId": "cccd3b6e-c2d1-4df0-9f31-3651cda57d4f",
+  "meta": {
+    "templateCredsSetupCompleted": false
+  },
+  "tags": [],
+  "pinData": {}
+}

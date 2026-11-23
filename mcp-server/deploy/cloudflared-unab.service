@@ -1,0 +1,15 @@
+[Unit]
+Description=Cloudflare Quick Tunnel para el servidor MCP UNAB (puerto 9000)
+After=network-online.target docker.service
+Wants=network-online.target
+
+[Service]
+User=ubuntu
+ExecStart=/usr/local/bin/cloudflared tunnel --url http://127.0.0.1:9000 --no-autoupdate --loglevel info
+Restart=always
+RestartSec=5
+StandardOutput=append:/home/ubuntu/cloudflared-unab.log
+StandardError=append:/home/ubuntu/cloudflared-unab.log
+
+[Install]
+WantedBy=multi-user.target

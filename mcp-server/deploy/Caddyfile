@@ -1,0 +1,31 @@
+# HTTPS automático para el servidor MCP de la UNAB.
+#
+# `54-211-28-77.sslip.io` resuelve automáticamente a 54.211.28.77 (servicio
+# gratuito sslip.io), así que Caddy puede emitir un certificado de Let's Encrypt
+# sin necesidad de comprar ni configurar un dominio propio.
+#
+# Requisitos en el security group de AWS: TCP 80 y 443 abiertos a 0.0.0.0/0.
+#
+# Alternativa con DuckDNS: reemplaza el bloque por
+#   unab-mcp.duckdns.org {
+#       ...
+#   }
+
+54-211-28-77.sslip.io {
+	encode zstd gzip
+
+	# Cabeceras útiles para depurar desde n8n Cloud.
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		-Server
+	}
+
+	reverse_proxy 127.0.0.1:9000
+
+	log {
+		output file /var/log/caddy/unab-mcp.log {
+			roll_size 5mb
+			roll_keep 3
+		}
+	}
+}

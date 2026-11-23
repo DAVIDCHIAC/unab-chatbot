@@ -1,0 +1,27 @@
+services:
+  mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: unab-mcp:latest
+    container_name: unab-mcp
+    restart: unless-stopped
+    # La instancia de demo es una t3.micro (908 MB): limitamos el contenedor
+    # para no competir con el resto del sistema.
+    mem_limit: 384m
+    env_file:
+      - .env
+    ports:
+      # Solo accesible desde la propia instancia: Caddy publica HTTPS en 443.
+      - "127.0.0.1:9000:9000"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:9000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 25s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

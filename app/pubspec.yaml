@@ -1,0 +1,28 @@
+name: unab_chatbot
+description: Chatbot de Apoyo Académico UNAB (RAG + MCP + n8n).
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  # AppBarThemeData / InputDecorationThemeData llegaron en Flutter 3.35 (Dart 3.9).
+  sdk: ">=3.9.0 <4.0.0"
+  flutter: ">=3.35.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  http: ^1.2.2
+  provider: ^6.1.2
+  shared_preferences: ^2.3.2
+  # Fork mantenido de flutter_markdown (el original está descontinuado).
+  flutter_markdown_plus: ^1.0.12
+  url_launcher: ^6.3.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true

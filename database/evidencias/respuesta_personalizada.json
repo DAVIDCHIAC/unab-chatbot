@@ -1,0 +1,31 @@
+{
+  "descripcion": "Respuesta personalizada generada por WF03 para el caso estrella y persistida en la tabla unab.conversaciones.",
+  "contexto_estudiante": {
+    "nombre_completo": "Jhon García",
+    "programa": "Ingeniería de Sistemas",
+    "semestre_actual": 3,
+    "promedio_acumulado": "3.69",
+    "creditos_aprobados": 30,
+    "porcentaje_avance": "18.8"
+  },
+  "historial_reprobado": [
+    {
+      "codigo_curso": "IS201",
+      "curso": "Cálculo Integral",
+      "estado": "reprobado",
+      "nota": "2.4"
+    }
+  ],
+  "conversacion_guardada": {
+    "id": "30",
+    "session_id": "evidencia-003",
+    "canal": "evidencia",
+    "id_estudiante": "10045234",
+    "pregunta": "¿Cuál es mi avance y qué cursos tengo pendientes?",
+    "respuesta": "**a) Resumen del estado académico:**\nEstás matriculado en el **3er semestre** de **Ingeniería de Sistemas** con un promedio acumulado de **3.69**. Has aprobado **30 créditos** (18.8% de avance total del plan de estudios) y tienes 14 créditos en curso. Se proyecta que te falten unos 8 semestres para culminar tu carrera.\n\n**b) Cursos aprobados y pendientes:**\n- **Aprobados:** 10 asignaturas.\n- **En curso:** 4 asignaturas.\n- **Pendientes:** Tienes **37 asignaturas** pendientes por cursar para completar tu malla curricular.\n\n**c) Riesgos y bloqueos por prerrequisitos:**\n- Tienes **1 asignatura reprobada**: *Cálculo Integral* (con calificación de 2.4).\n- Tienes **6 cursos bloqueados** actualmente: *Cálculo Multivariado* por no tener aprobado su prerrequisito, y otras 5 materias (como *Bases de Datos II*, *Sistemas Operativos*, entre otras) debido a que sus prerrequisitos están pendientes o en curso.\n\n**d) Recomendación:**\nEs fundamental que planifiques la recuperación de *Cálculo Integral* para destrabar las materias de matemáticas avanzadas. Te sugiero agendar una cita con el **director de tu programa** para revisar tu ruta académica y estructurar de manera óptima tu próxima matrícula.",
+    "tipo": "academico",
+    "fuentes": {},
+    "latencia_ms": 2946,
+    "created_at": "2026-11-22 21:21:16.093122+00"
+  }
+}
