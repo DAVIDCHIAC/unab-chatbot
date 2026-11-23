@@ -19,6 +19,10 @@ académico y a las noticias.
 > <https://davidchiac.github.io/unab-chatbot/> · interfaz estática en
 > [`index.html`](index.html) que llama directamente a los webhooks de
 > n8n Cloud. No requiere instalar nada.
+>
+> **Diapositivas de respaldo (12 láminas):**
+> <https://davidchiac.github.io/unab-chatbot/diapositivas.html> · se navegan con
+> las flechas ← → y pueden proyectarse ([`diapositivas.html`](diapositivas.html)).
 
 ```
 Scraper RSS (WF04 · cron 6 h) ── 2 fuentes + filtros fecha/tema ──┐

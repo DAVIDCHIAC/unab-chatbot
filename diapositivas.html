@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Diapositivas · Chatbot UNAB</title>
+<style>
+  :root{--u:#0a3d91;--u2:#1565c0;--a:#f5a623;--bg:#0b1b35;--ink:#17233a;--paper:#fff}
+  *{box-sizing:border-box;font-family:Segoe UI,system-ui,sans-serif}
+  body{margin:0;background:var(--bg);color:var(--ink);height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
+  #stage{width:min(1100px,94vw);height:min(690px,82vh);background:var(--paper);border-radius:18px;box-shadow:0 18px 60px #0007;position:relative;overflow:hidden}
+  .slide{display:none;height:100%;padding:44px 56px;flex-direction:column;animation:fade .25s ease}
+  .slide.act{display:flex}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  h1{font-size:40px;margin:0 0 10px;color:var(--u);line-height:1.12}
+  h2{font-size:30px;margin:0 0 18px;color:var(--u);line-height:1.15}
+  h3{font-size:18px;margin:18px 0 8px;color:var(--u2)}
+  p,li{font-size:18px;line-height:1.5;margin:6px 0}
+  ul{margin:6px 0;padding-left:24px}
+  .lead{font-size:22px;color:#44546e}
+  .eyebrow{text-transform:uppercase;letter-spacing:2px;font-size:12px;color:var(--a);font-weight:800;margin-bottom:10px}
+  .tag{display:inline-block;background:#eaf1fc;color:var(--u);border-radius:14px;padding:5px 12px;font-size:13px;margin:3px}
+  .grid{display:grid;gap:14px}
+  .g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}
+  .card{background:#f5f8fd;border:1px solid #dce6f5;border-left:5px solid var(--u2);border-radius:12px;padding:14px 16px}
+  .card b{color:var(--u)}
+  table{width:100%;border-collapse:collapse;font-size:16px}
+  th{background:var(--u);color:#fff;text-align:left;padding:9px 12px}
+  td{padding:9px 12px;border-bottom:1px solid #e3eaf5;vertical-align:top}
+  tr:nth-child(even) td{background:#f8fafd}
+  code{background:#eef3fb;color:#0b3f8a;padding:2px 6px;border-radius:5px;font-size:14px}
+  .num{font-size:36px;font-weight:800;color:var(--u2)}
+  .center{text-align:center}
+  .cover{justify-content:center;align-items:center;text-align:center;background:linear-gradient(135deg,#eef4ff,#fff 65%)}
+  .cover h1{font-size:52px}
+  .pill{background:var(--u);color:#fff;border-radius:30px;padding:9px 20px;font-size:15px;display:inline-block;margin-top:18px}
+  a{color:var(--u2)}
+  .btn{display:inline-block;background:var(--a);color:#3b2600;text-decoration:none;font-weight:800;border-radius:10px;padding:11px 18px;margin-top:14px}
+  .foot{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:12px;border-top:1px solid #e5ecf7;font-size:12px;color:#7b8798}
+  #nav{display:flex;gap:10px;align-items:center;margin-top:14px;color:#cfe0ff}
+  #nav button{background:#1b3d72;color:#fff;border:1px solid #3c5f96;border-radius:9px;padding:8px 16px;font-size:14px;cursor:pointer}
+  #nav button:hover{background:var(--u2)}
+  #count{font-size:14px;min-width:60px;text-align:center}
+  .warn{background:#fff6e6;border:1px solid #f0cf96;border-radius:12px;padding:14px 18px}
+  .quote{font-size:21px;font-style:italic;color:#33456a;border-left:5px solid var(--a);padding-left:18px;margin:16px 0}
+  @media(max-width:760px){#stage{height:86vh}.slide{padding:26px 24px}h1{font-size:30px}.cover h1{font-size:36px}h2{font-size:24px}p,li{font-size:15px}table{font-size:13px}.g3,.g2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <section class="slide cover act">
+    <div class="eyebrow">Biing26 · Universidad Cooperativa de Colombia</div>
+    <h1>Chatbot de Apoyo<br>Académico UNAB</h1>
+    <p class="lead">RAG + agentes MCP + datos académicos en una sola conversación</p>
+    <div class="pill">Exposición de 3 a 5 minutos</div>
+    <p style="font-size:14px;color:#7b8798;margin-top:22px">Datos 100 % sintéticos · <a href="https://github.com/DAVIDCHIAC/unab-chatbot">github.com/DAVIDCHIAC/unab-chatbot</a></p>
+    <div class="foot"><span> → para avanzar</span><span>1 / 12</span></div>
+  </section>
+
+  <section class="slide">
+    <div class="eyebrow">1 · El problema</div>
+    <h2>La información está repartida</h2>
+    <p class="lead">Reglamento de grado, calendario, notas, prerrequisitos y noticias viven en lugares distintos.</p>
+    <div class="grid g2" style="margin-top:14px">
+      <div class="card"><b>Antes</b><br>El estudiante abre varios documentos y pantallas para armar una respuesta.</div>
+      <div class="card"><b>Ahora</b><br>Un asistente en español reúne todo y explica el resultado.</div>
+    </div>
+    <h3>Cuatro capacidades</h3>
+    <div>
+      <span class="tag">1 · RAG institucional</span><span class="tag">2 · Calendario</span>
+      <span class="tag">3 · Avance académico</span><span class="tag">4 · Noticias</span>
+    </div>
+    <div class="foot"><span>Chatbot UNAB</span><span>2 / 12</span></div>
+  </section>
+
+  <section class="slide">
+    <div class="eyebrow">2 · Tecnologías</div>
+    <h2>Qué se utilizó</h2>
+    <table>
+      <tr><th>Capa</th><th>Herramienta</th><th>Para qué</th></tr>
+      <tr><td>Datos</td><td>Supabase PostgreSQL + pgvector</td><td>Guardar datos y vectores</td></tr>
+      <tr><td>Vectores</td><td>Gemini Embedding (1536 d)</td><td>Buscar en documentos</td></tr>
+      <tr><td>Herramientas</td><td>FastMCP en EC2 + Docker</td><td>18 herramientas académicas</td></tr>
+      <tr><td>Seguridad</td><td>Cloudflare Tunnel</td><td>HTTPS sin abrir puertos</td></tr>
+      <tr><td>Orquestación</td><td>n8n Cloud</td><td>4 workflows con memoria</td></tr>
+      <tr><td>LLM</td><td>Gemini 3.5 Flash Lite</td><td>Redactar respuestas</td></tr>
+      <tr><td>Cliente</td><td>Flutter (Android)</td><td>App con 4 pantallas</td></tr>
+      <tr><td>Scraper</td><td>RSS · cron 6 h</td><td>Noticias de 2 fuentes</td></tr>
+    </table>
+    <div class="foot"><span>Chatbot UNAB</span><span>3 / 12</span></div>
+  </section>
+
+  <section class="slide">
+    <div class="eyebrow">3 · Arquitectura</div>
+    <h2>Cómo circula una pregunta</h2>
+    <div class="grid g3" style="margin-top:8px;text-align:center">
+      <div class="card"><b>App Flutter</b><br>o navegador web</div>
+      <div class="card"><b>n8n Cloud</b><br>4 workflows + Gemini</div>
+      <div class="card"><b>MCP en EC2</b><br>18 herramientas</div>
+    </div>
+    <div class="center" style="font-size:30px;color:var(--a);margin:6px 0">↓ &nbsp;&nbsp;&nbsp; ↓ &nbsp;&nbsp;&nbsp; ↓</div>
+    <div class="card center" style="background:#eaf1fc"><b>Supabase PostgreSQL + pgvector</b><br>programas · notas · calendario · noticias · documentos vectorizados</div>
+    <p class="quote">“La app no guarda credenciales: solo conoce la URL pública de n8n.”</p>
+    <div class="foot"><span>Chatbot UNAB</span><span>4 / 12</span></div>
+  </section>
+
+  <section class="slide">
+    <div class="eyebrow">4 · Workflows</div>
+    <h2>Los 4 workflows publicados</h2>
+    <table>
+      <tr><th>WF</th><th>Endpoint</th><th>Qué hace</th></tr>
+      <tr><td><b>01</b></td><td><code>/webhook/unab/rag</code></td><td>Responde con 7 documentos y cita la fuente</td></tr>
+      <tr><td><b>02</b></td><td><code>/webhook/unab/calendario</code></td><td>Consulta fechas en lenguaje natural</td></tr>
+      <tr><td><b>03</b></td><td><code>/webhook/unab/academico</code></td><td>Notas, créditos, bloqueos y recomendación</td></tr>
+      <tr><td><b>04</b></td><td><code>/webhook/unab/noticias</code></td><td>Noticias filtradas por fecha y tema</td></tr>
+    </table>
+    <p style="margin-top:14px">Cada agente usa <code>session_id</code>, <code>pregunta</code> e <code>id_estudiante</code>. Hay 3 endpoints SQL rápidos para las pantallas de la app.</p>
+    <div class="foot"><span>Chatbot UNAB</span><span>5 / 12</span></div>
+  </section>
+
+  <section class="slide">
+    <div class="eyebrow">5 · Datos</div>
+    <h2>Datos de demostración</h2>
+    <div class="grid g3" style="text-align:center">
+      <div class="card"><div class="num">12</div>programas</div>
+      <div class="card"><div class="num">51</div>cursos</div>
+      <div class="card"><div class="num">37</div>prerrequisitos</div>
+      <div class="card"><div class="num">30</div>estudiantes</div>
+      <div class="card"><div class="num">908</div>registros</div>
+      <div class="card"><div class="num">27</div>fragmentos RAG</div>
+    </div>
+    <h3>Caso estrella</h3>
+    <p><b>10045234 · Jhon García</b> — promedio <b>3.69</b>, avance <b>18.8 %</b>. Cálculo Integral (IS201) reprobada con <b>2.4</b> → Cálculo Multivariado (IS301) bloqueado; 6 bloqueos en total.</p>
+    <div class="foot"><span>Chatbot UNAB</span><span>6 / 12</span></div>
+  </section>
+
+  <section class="slide">
+    <div class="eyebrow">6 · Demo en vivo</div>
+    <h2>Tres preguntas para el chat</h2>
+    <table>
+      <tr><th>Asistente</th><th>Pregunta</th><th>Respuesta esperada</th></tr>
+      <tr><td>Asistente UNAB</td><td>¿Cuáles son los requisitos de grado?</td><td>6 requisitos + fuente <code>proceso_grado.md</code></td></tr>
+      <tr><td>Calendario</td><td>¿Cuándo son los exámenes finales?</td><td>26/11/2026 al 03/12/2026</td></tr>
+      <tr><td>Mi avance</td><td>¿Cuál es mi promedio?</td><td>3.69 · 130 créditos · 6 bloqueos</td></tr>
+    </table>
+    <a class="btn" href="https://davidchiac.github.io/unab-chatbot/" target="_blank" rel="noopener">Abrir chat en el navegador ↗</a>
+    <div class="foot"><span>Chatbot UNAB</span><span>7 / 12</span></div>
+  </section>
+
+  <section class="slide">
+    <div class="eyebrow">7 · Evidencias</div>
+    <h2>Qué podemos mostrar</h2>
+    <ul>
+      <li><b>6 / 6 webhooks</b> responden HTTP 200 con datos reales del entorno desplegado.</li>
+      <li><b>Recuperación RAG:</b> pregunta + 5 fragmentos con scores.</li>
+      <li><b>Scraper:</b> 2 fuentes RSS → noticias guardadas con filtros de 45 días y tema.</li>
+      <li><b>Base de datos:</b> conteos y consulta vectorial verificados.</li>
+      <li><b>APK release</b> incluido en el repositorio.</li>
+    </ul>
+    <p style="font-size:15px">Detalles en <code>n8n/evidencias/</code>, <code>rag/evidencias/</code> y <code>database/evidencias/</code>.</p>
+    <div class="foot"><span>Chatbot UNAB</span><span>8 / 12</span></div>
+  </section>
+
+  <section class="slide">
+    <div class="eyebrow">8 · Resultados</div>
+    <h2>Lo que se logró</h2>
+    <div class="grid g2">
+      <div class="card"><b>Funcional</b><br>Chat con memoria, RAG con fuente, respuestas personalizadas y noticias automatizadas.</div>
+      <div class="card"><b>Técnico</b><br>18 herramientas MCP, embeddings de un solo modelo y endpoints SQL sin LLM.</div>
+      <div class="card"><b>Entregable</b><br>Repo público, APK release, guion, evidencias e informe de exposición.</div>
+      <div class="card"><b>Escalable</b><br>Cada capa se puede cambiar sin rehacer las demás.</div>
+    </div>
+    <div class="foot"><span>Chatbot UNAB</span><span>9 / 12</span></div>
+  </section>
+
+  <section class="slide">
+    <div class="eyebrow">9 · Dificultades</div>
+    <h2>Problemas que se resolvieron</h2>
+    <ul>
+      <li>El túnel de Cloudflare rotó su URL: se actualizó n8n y se recreó el contenedor del MCP.</li>
+      <li>WF03 tenía columnas <code>*_prerrequisito</code> en vez de <code>*_prerequisito</code>: corregido.</li>
+      <li>El modelo <code>gemini-2.5-flash</code> dejó de estar disponible: se alineó a <code>gemini-3.5-flash-lite</code>.</li>
+      <li>Gemini responde a veces con error de stream: la interfaz reintenta automáticamente.</li>
+    </ul>
+    <div class="warn"><b>Si vuelve a pasar:</b> revisar el <code>/health</code> del MCP, recrear el contenedor y ejecutar <code>actualizar_mcp.py</code> con la URL nueva. Está en <code>n8n/CONFIGURACION_MANUAL.md</code>.</div>
+    <div class="foot"><span>Chatbot UNAB</span><span>10 / 12</span></div>
+  </section>
+
+  <section class="slide">
+    <div class="eyebrow">10 · Plan B</div>
+    <h2>Si la demo en vivo falla</h2>
+    <div class="warn">
+      <p><b>1.</b> No improvisar: abrir el archivo <code>n8n/evidencias/respuestas_webhooks.json</code> y leer una respuesta guardada.</p>
+      <p><b>2.</b> Usar el caso estrella: Jhon García, promedio 3.69, IS201 reprobada, IS301 bloqueada.</p>
+      <p><b>3.</b> Explicar el flujo con la diapositiva de arquitectura: app → n8n → Gemini → MCP → Supabase.</p>
+      <p><b>4.</b> Cerrar con la pertinencia pedagógica (siguiente diapositiva).</p>
+    </div>
+    <p class="quote">“La respuesta no viene de un texto fijo: el agente elige una herramienta MCP y Gemini la redacta.”</p>
+    <div class="foot"><span>Chatbot UNAB</span><span>11 / 12</span></div>
+  </section>
+
+  <section class="slide">
+    <div class="eyebrow">11 · Cierre</div>
+    <h2>Aportación pedagógica</h2>
+    <p class="lead">No sustituye al docente: automatiza consultas repetitivas y deja una recomendación accionable.</p>
+    <div class="grid g3" style="margin-top:12px">
+      <div class="card"><b>Datos granulares</b><br>Notas, créditos y prerrequisitos por estudiante.</div>
+      <div class="card"><b>Conocimiento RAG</b><br>Reglamento y plan de estudios con fuente.</div>
+      <div class="card"><b>Recomendación</b><br>Qué hacer antes de la próxima matrícula.</div>
+    </div>
+    <h3>Preguntas rápidas</h3>
+    <p style="font-size:15px">¿Datos reales? <b>No, sintéticos.</b> ¿Por qué MCP? <b>Reglas reutilizables.</b> ¿Por qué Supabase? <b>PostgreSQL + pgvector administrado.</b></p>
+    <p class="center" style="margin-top:10px"><a href="https://github.com/DAVIDCHIAC/unab-chatbot"><b>github.com/DAVIDCHIAC/unab-chatbot</b></a></p>
+    <div class="foot"><span>Fin · Gracias</span><span>12 / 12</span></div>
+  </section>
+
+</div>
+<div id="nav">
+  <button id="prev">← Anterior</button>
+  <span id="count">1 / 12</span>
+  <button id="next">Siguiente →</button>
+  <span style="font-size:12px;opacity:.7">Usa ← → o la barra espaciadora</span>
+</div>
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  let i=0;
+  function show(n){
+    i=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach((s,k)=>s.classList.toggle('act',k===i));
+    document.getElementById('count').textContent=(i+1)+' / '+slides.length;
+    location.hash='s'+(i+1);
+  }
+  document.getElementById('prev').onclick=()=>show(i-1);
+  document.getElementById('next').onclick=()=>show(i+1);
+  document.addEventListener('keydown',e=>{
+    if(['ArrowRight',' ','PageDown'].includes(e.key)){e.preventDefault();show(i+1)}
+    if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();show(i-1)}
+    if(e.key==='Home')show(0);
+    if(e.key==='End')show(slides.length-1);
+  });
+  const h=parseInt((location.hash||'').replace('#s',''),10);
+  if(h>0)show(h-1);
+</script>
+</body>
+</html>

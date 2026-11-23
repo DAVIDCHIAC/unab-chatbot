@@ -8,6 +8,10 @@
 > Versión resumida para exponer en clase. La documentación completa está en
 > [`README.md`](README.md). Los datos son **sintéticos**: no hay información real
 > de estudiantes.
+>
+> **Diapositivas de respaldo (12 láminas):**
+> <https://davidchiac.github.io/unab-chatbot/diapositivas.html> · se navegan con
+> las flechas ← →. Incluyen una lámina de *Plan B si falla la demo*.
 
 ---
 
