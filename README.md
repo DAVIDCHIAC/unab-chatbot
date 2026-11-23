@@ -10,6 +10,10 @@ académico y a las noticias.
 > estudiantes.
 >
 > **Repositorio:** <https://github.com/DAVIDCHIAC/unab-chatbot>
+>
+> **¿Vas a exponer el proyecto?** Usa el
+> [**Informe de exposición (3–5 min)**](INFORME_EXPOSICION.md): guion cronometrado,
+> tecnologías, demo en vivo, evidencias y preguntas frecuentes.
 
 ```
 Scraper RSS (WF04 · cron 6 h) ── 2 fuentes + filtros fecha/tema ──┐
@@ -466,6 +470,7 @@ unab-chatbot/
 
 | Documento | Contenido |
 |-----------|-----------|
+| [`INFORME_EXPOSICION.md`](INFORME_EXPOSICION.md) | **Versión resumida para exponer en 3–5 min** (guion, demo, evidencias) |
 | [`docs/00-plan.md`](docs/00-plan.md) | Entregables, decisiones y estado |
 | [`docs/01-arquitectura.md`](docs/01-arquitectura.md) | Diseño, diagramas, modelo de datos, seguridad |
 | [`docs/02-despliegue.md`](docs/02-despliegue.md) | Supabase, Gemini, RAG, EC2, n8n, Flutter |
