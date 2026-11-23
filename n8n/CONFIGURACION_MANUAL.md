@@ -79,7 +79,7 @@ Modelo configurado en los 3 nodos: **`models/gemini-3.5-flash-lite`**.
 
 ## 4. Endpoint del MCP
 
-`https://organize-removing-levels-auburn.trycloudflare.com/mcp`
+`https://delight-bit-twenty-walker.trycloudflare.com/mcp`
 
 Si el túnel cambia tras un reinicio de la EC2:
 
@@ -94,6 +94,12 @@ python n8n_setup.py publish
 > recrearlo (`docker compose up -d --build`) para que aceptara el nuevo `Host`.
 > Además se alineó WF03 con `models/gemini-3.5-flash-lite` y se corrigió el
 > nombre de las columnas `*_prerequisito` en su consulta de resumen.
+>
+> **Segunda rotación del 23/11 (19:00 UTC):** el túnel pasó a
+> `delight-bit-twenty-walker.trycloudflare.com`. Procedimiento aplicado: recrear
+> el contenedor y volver a publicar los 3 workflows con `actualizar_mcp.py`.
+> La interfaz web (`index.html`) reintenta automáticamente hasta 3 veces porque
+> Gemini responde de forma intermitente con *Failed to parse stream*.
 
 `Enviar Push FCM` (WF04) permanece desactivado a propósito: es un placeholder de
 Firebase sin credenciales; el resto del workflow funciona igual.

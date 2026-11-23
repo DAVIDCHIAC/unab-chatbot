@@ -76,12 +76,22 @@ async function preguntar(texto){
   add('user',texto);q.value='';send.disabled=true;
   const esperando=add('bot','Pensando…');
   const body={session_id:session,pregunta:texto,id_estudiante:'10045234',canal:'web-demo'};
-  try{
-    const r=await fetch(BASE+RUTAS[modo],{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-    const data=await r.json();
-    esperando.textContent=(data.respuesta||data.error||'Sin respuesta')+(data.latencia_ms?'\n\n· '+(data.latencia_ms/1000).toFixed(1)+' s':'');
-  }catch(e){esperando.textContent='No pude conectar con n8n: '+e.message}
-  finally{send.disabled=false;q.focus()}
+  let ultimo='';
+  for(let intento=1;intento<=3;intento++){
+    try{
+      esperando.textContent=intento>1?'Reintentando ('+intento+'/3)…':'Pensando…';
+      const r=await fetch(BASE+RUTAS[modo],{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+      const data=await r.json();
+      if(r.ok && data.respuesta){
+        esperando.textContent=data.respuesta+(data.latencia_ms?'\n\n· '+(data.latencia_ms/1000).toFixed(1)+' s':'');
+        send.disabled=false;q.focus();return;
+      }
+      ultimo=data.error||data.message||('HTTP '+r.status);
+    }catch(e){ultimo=e.message}
+    if(intento<3) await new Promise(r=>setTimeout(r,800*intento));
+  }
+  esperando.textContent='No pude obtener respuesta ('+ultimo+'). Intenta de nuevo.';
+  send.disabled=false;q.focus();
 }
 document.getElementById('form').onsubmit=e=>{e.preventDefault();preguntar(q.value)};
 </script>

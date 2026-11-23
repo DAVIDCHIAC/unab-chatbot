@@ -110,7 +110,7 @@
         220
       ],
       "parameters": {
-        "endpointUrl": "https://organize-removing-levels-auburn.trycloudflare.com/mcp",
+        "endpointUrl": "https://delight-bit-twenty-walker.trycloudflare.com/mcp",
         "serverTransport": "httpStreamable",
         "authentication": "bearerAuth",
         "include": "selected",
