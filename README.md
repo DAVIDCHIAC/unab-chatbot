@@ -17,7 +17,7 @@ académico y a las noticias.
 >
 > **Demo web en vivo ( abre en el celular ):**
 > <https://davidchiac.github.io/unab-chatbot/> · interfaz estática en
-> [`chat/index.html`](chat/index.html) que llama directamente a los webhooks de
+> [`index.html`](index.html) que llama directamente a los webhooks de
 > n8n Cloud. No requiere instalar nada.
 
 ```
